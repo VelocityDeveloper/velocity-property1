@@ -1,0 +1,281 @@
+[data-bs-theme=light] body {
+    font-family: 'Roboto', sans-serif !important;
+    font-size: 14px !important;
+    line-height: 2;
+    background-color: #ffffff;
+}
+.velocity-page-title {
+	position: absolute;
+    z-index: 7;
+	left: 0;
+	bottom: 30px;
+	text-align: left;
+	width: 100%;
+}
+.velocity-page-title .velocity-judul {
+	font-size: 27px;
+	color: #fff;
+	text-transform: uppercase;
+}
+.velocity-page-header {
+    min-height: 305px;
+    background-size: cover;
+}
+.menu-header .navbar-toggler {
+	font-size: 15px !important;
+	padding-left: 10px !important;
+	padding-right: 10px !important;
+}
+.velocity-menu {
+    position: absolute;
+    width: 100%;
+    z-index: 9;
+    background-image: linear-gradient(rgba(0,0,0,0.3), transparent);
+    background-size: auto 100%;
+    background-repeat: repeat-x;
+}
+.card-layanan {
+    background-color: #fff;
+    border: 1px solid #eee;
+    box-shadow: 0px 0px 7px 0px rgba(0,0,0,0.1);
+    padding: 0 0 10px;
+    margin: 65px 0 0;
+ }
+ .img-layanan {
+    margin: -45px 0 20px 0;
+ }
+ .img-layanan img {
+	max-width: 135px;
+	max-height: 135px;
+	border: 5px solid #fff;
+	box-shadow: 0px 0px 7px 0px rgba(0,0,0,0.2);
+}
+ .label-property {
+    background: var(--bs-primary);
+    position: absolute;
+    left: -1px;
+    top: -14px;
+    padding: 2px 10px;
+    color: #fff;
+    line-height: 1.5;
+ }
+ .label-property::before {
+    content: '';
+    width: 0;
+    height: 0;
+    border-top: 13px solid transparent;
+    border-left: 15px solid var(--bs-primary);
+    border-bottom: 12px solid transparent;
+    position: absolute;
+    right: -15px;
+    top: 0px;
+ }
+.wp-calendar-nav {
+    display: none !important;
+}
+.wp-calendar-table {
+    text-align: center;
+}
+.site-footer .velocity-property-list {
+    border-color: #403c3c !important;
+}
+.site-footer h1, .site-footer h2, .site-footer h3, .site-footer h4, .site-footer h5, .site-footer h6,
+.site-footer .text-dark, .site-footer a {
+    color: #ffffff !important;
+}
+.container {
+    max-width: 1140px !important;
+}
+.bg-theme {
+	background-color: var(--bs-primary) !important;
+	color: #fff !important;
+}
+.bg-gradient {
+	background-color: var(--bs-primary) !important;
+    background-image: linear-gradient(var(--bs-primary), rgba(0,0,0,0.3)) !important;
+}
+.site-footer {
+	background-color: #fff;
+	position: relative;
+	z-index: 2;
+}
+#page-wrapper #content, .wrapper {
+	padding: 0 0 1.5rem !important;
+}
+#main-menu .dropdown-menu,
+.bg-header {
+    background: transparent !important;
+}
+.navbar-brand img {
+    max-height: 130px !important;
+}
+#primary-menu a {
+    font-size: 0.8rem;
+}
+.velocity-widget .table>:not(caption)>*>*, 
+.velocity-widget .widget_calendar .wp-calendar-table>:not(caption)>*>*,
+.velocity-widget .wp-block-table table>:not(caption)>*>*, 
+.velocity-widget table:not(.table)>:not(caption)>*>* {
+    padding: 0.25rem 0.25rem;
+    background: transparent !important;
+    color: #000000;
+}
+.widget_search #searchsubmit,
+.widget_search #s {
+    padding: 0.25rem;
+    font-size: .85rem;
+}
+.velocity-widget .widget {
+	margin-bottom: 1rem;
+	position: relative;
+}
+.widget ul,
+.entry-content ul {
+    list-style: none;
+    padding-left: 0 !important;
+}
+.velocity-widget .widget > ul {
+    padding-left: .35rem !important;
+}
+.widget ul > li,
+.entry-content ul > li {
+    padding-left: .65rem;
+    position: relative;
+}
+.widget ul > li:before,
+.entry-content ul > li:before {
+    content: '\f0da';
+    font-family: 'FontAwesome';
+    color: var(--bs-primary);
+    position: absolute;
+    left: 0px;
+    top: 0;
+    display: inline-block;
+}
+.widget ul li {
+	display: block;
+	padding-bottom: 7px;
+	position: relative;
+	border-bottom: 1px solid var(--bs-dark-bg-subtle);
+	margin-bottom: 7px;
+}
+.widget ul li:first-child {
+	margin-top: 7px;
+}
+.widget ul li:last-child {
+	border-bottom: 0;
+	margin-bottom: 0;
+}
+.entry-content ul > li {
+    padding-left: .75rem;
+}
+.entry-content ul {
+    padding-left: 1rem !important;
+}
+.widget_calendar caption {
+    caption-side: top;
+    text-align: center;
+    padding-top: 0;
+}
+.widget_calendar #today a,
+.widget_calendar #today {
+    background-color: var(--bs-primary) !important;
+    color: var(--bs-light);
+    text-align: center;
+}
+.site-main {
+	padding-bottom: 20px;
+}
+.search-results .site-main article,
+.archive .site-main article {
+    margin-bottom: 1rem !important;
+}
+.site-main .page-header .page-title, .site-main .entry-header .entry-title {
+	display: none !important;
+}
+.search-results .site-main .entry-header .entry-title {
+    font-size: 1rem !important;
+	padding-bottom: 0 !important;
+	border-bottom: 0 !important;
+    margin-bottom: 5px;
+}
+.search-results .site-main .entry-summary p {
+    margin-bottom: 3px;
+}
+.search-results .site-main .entry-header .entry-meta,
+.widget ul li .sub-menu,
+.justg-breadcrumbs {
+    display: none !important;
+}
+.single-post .site-main .entry-content {
+	padding-top: 1rem !important;
+	padding-bottom: 1rem !important;
+}
+.archive-header {
+	margin-top: -90px;
+	margin-bottom: 20px;
+	background-color: var(--bs-primary);
+	position: relative;
+	z-index: 9;
+	padding: 20px;
+}
+.entry-content iframe {
+	width: 100% !important;
+}
+.vdgallery-kolom .vdgallery-item img {
+	height: 150px !important;
+	object-fit: cover;
+}
+.bg-agen {
+    background-image: url('../img/phone.png');
+    background-color: #CCEEFF;
+    background-position: bottom 7px right 7px;
+    background-repeat: no-repeat;
+    background-size: 50px;
+ }
+.property-location span::after {
+    content: ', ';
+ }
+ .property-location span:last-child::after {
+    content: '';
+ }
+a {
+	color: var(--bs-primary);
+}
+a:hover {
+	color: var(--bs-dark);
+}
+
+
+
+@media (min-width: 768px) {
+    #primary-menu > li > a {
+        position: relative;
+        color: #ffffff;
+        padding-top: 0.5rem !important;
+        padding-bottom: 0.5rem !important;
+        padding-left: 1rem;
+        padding-right: 1rem;
+        font-size: 15px;
+    }
+    #primary-menu > li.current_page_item > a,
+    #primary-menu > li.current-menu-item > a,
+    #primary-menu > li > a:hover {
+        color: #ffffff;
+        background-color: var(--bs-primary);
+    }
+    .pr-md-0 {
+        padding-right: 0 !important;
+    }
+    .site-main {
+        padding-left: 0 !important;
+    }
+}
+
+@media (min-width: 1000px) {
+    .widget-area {
+        max-width: 31% !important;
+        width: 31%;
+        padding-left: 20px !important;
+    }
+}
