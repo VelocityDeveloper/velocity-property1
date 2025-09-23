@@ -24,8 +24,10 @@
 	'function-child.php',
 	'shortcodes.php',
 	'property.php',
+	'filter.php',
  ];
 
  foreach( $includes as $include ) {
 	 require_once( $inc . '/' . $include );
+
  }
