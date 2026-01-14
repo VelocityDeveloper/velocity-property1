@@ -245,7 +245,9 @@ function velocity_allpage_simple() {
         update_post_meta($postID, $count_key, $count + 1);
     }
 }
-add_action( 'template_redirect', 'velocity_allpage_simple', 11 );
+if ( ! ( class_exists( 'Velocity_Addons_Statistic' ) && get_option( 'statistik_velocity', '1' ) === '1' ) ) {
+    add_action( 'template_redirect', 'velocity_allpage_simple', 11 );
+}
 
 
 
@@ -291,7 +293,13 @@ function velocity_property($atts){
     <div class="border-bottom pb-2 mb-2 row mx-0 velocity-property-list">
         <?php if($show_image == 'yes'){ ?>
             <div class="col-3 ps-0">
-                <?php echo do_shortcode("[resize-thumbnail width='300' height='300' crop='false' upscale='true' post_id='".$post->ID."']"); ?>
+                <div class="ratio ratio-1x1">
+                    <?php if (has_post_thumbnail($post->ID)) { ?>
+                        <?php echo get_the_post_thumbnail($post->ID, 'medium', array('class' => 'img-fluid')); ?>
+                    <?php } else { ?>
+                        <svg style="background-color: #ececec;width: 100%;height: 100%;" aria-hidden="true"></svg>
+                    <?php } ?>
+                </div>
             </div>
         <?php } ?>
         <div class="col px-0">

@@ -194,6 +194,30 @@ function velocitychild_customize_register($wp_customize)
 		'choices' => $category_choices,
 	]);
 
+	$wp_customize->add_section('section_property_defaults', [
+		'panel'    => 'panel_velocity',
+		'title'    => __('Properti (Default)', 'justg'),
+		'priority' => 15,
+	]);
+	$wp_customize->add_setting('property_default_agent', [
+		'type'              => 'theme_mod',
+		'sanitize_callback' => 'sanitize_text_field',
+	]);
+	$wp_customize->add_control('property_default_agent', [
+		'type'    => 'text',
+		'label'   => __('Agen Default', 'justg'),
+		'section' => 'section_property_defaults',
+	]);
+	$wp_customize->add_setting('property_default_agent_phone', [
+		'type'              => 'theme_mod',
+		'sanitize_callback' => 'sanitize_text_field',
+	]);
+	$wp_customize->add_control('property_default_agent_phone', [
+		'type'    => 'text',
+		'label'   => __('Kontak Agen Default', 'justg'),
+		'section' => 'section_property_defaults',
+	]);
+
 	// remove panel in customizer
 	$wp_customize->remove_panel('global_panel');
 	$wp_customize->remove_panel('panel_header');

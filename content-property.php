@@ -12,7 +12,13 @@ defined('ABSPATH') || exit;
 $status = get_post_meta( $post->ID, 'status', true );
 $lokasi = get_post_meta( $post->ID, 'lokasi', true );
 $agen = get_post_meta( $post->ID, 'agen', true );
+if (empty($agen)) {
+    $agen = get_theme_mod('property_default_agent', '');
+}
 $telepon_agen = get_post_meta( $post->ID, 'telepon_agen', true );
+if (empty($telepon_agen)) {
+    $telepon_agen = get_theme_mod('property_default_agent_phone', '');
+}
 $luas_tanah = get_post_meta( $post->ID, 'luas_tanah', true );
 $luas_bangunan = get_post_meta( $post->ID, 'luas_bangunan', true );
 $jumlah_lantai = get_post_meta( $post->ID, 'jumlah_lantai', true );
