@@ -15,184 +15,7 @@ function velocitychild_theme_setup()
 	// Load justg_child_enqueue_parent_style after theme setup
 	add_action('wp_enqueue_scripts', 'justg_child_enqueue_parent_style', 20);
 
-	if (class_exists('Kirki')) :
-
-		Kirki::add_panel('panel_velocity', [
-			'priority'    => 10,
-			'title'       => esc_html__('Velocity Theme', 'justg'),
-			'description' => esc_html__('', 'justg'),
-		]);
-
-		// section title_tagline
-		Kirki::add_section('title_tagline', [
-			'panel'    => 'panel_velocity',
-			'title'    => __('Site Identity', 'justg'),
-			'priority' => 10,
-		]);
-		Kirki::add_field('justg_config', [
-			'type'        => 'image',
-			'settings'    => 'home_header',
-			'label'       => __('Home Header', 'kirki'),
-			'description' => esc_html__('', 'kirki'),
-			'section'     => 'header_image',
-			'priority' => 1,
-		]);
-
-
-		///Section Layanan
-		Kirki::add_section('section_layanan', [
-			'panel'    => 'panel_velocity',
-			'title'    => __('Layanan (Halaman Depan)', 'justg'),
-			'priority' => 11,
-		]);
-		Kirki::add_field('justg_config', [
-			'type'        => 'text',
-			'settings'    => 'judul_layanan',
-			'label'       => __('Judul Layanan', 'kirki'),
-			'section'     => 'section_layanan',
-		]);
-		Kirki::add_field('justg_config', [
-			'type'        => 'text',
-			'settings'    => 'subjudul_layanan',
-			'label'       => __('Sub Judul Layanan', 'kirki'),
-			'section'     => 'section_layanan',
-		]);
-		for ($x = 1; $x <= 4; $x++) {
-			Kirki::add_field('justg_config', [
-				'type'        => 'text',
-				'settings'    => 'layanan'.$x,
-				'label'       => __('Layanan '.$x, 'kirki'),
-				'description' => esc_html__('Judul layanan '.$x, 'kirki'),
-				'section'     => 'section_layanan',
-			]);
-			Kirki::add_field('justg_config', [
-				'type'        => 'url',
-				'settings'    => 'urllayanan'.$x,
-				'label'       => __('Link Layanan '.$x, 'kirki'),
-				'section'     => 'section_layanan',
-			]);
-			Kirki::add_field('justg_config', [
-				'type'        => 'image',
-				'settings'    => 'gambarlayanan'.$x,
-				'label'       => __('Gambar Layanan '.$x, 'kirki'),
-				'description' => esc_html__('', 'kirki'),
-				'section'     => 'section_layanan',
-			]);
-		}
-
-
-		///Section Properti
-		Kirki::add_section('section_properti', [
-			'panel'    => 'panel_velocity',
-			'title'    => __('Properti (Halaman Depan)', 'justg'),
-			'priority' => 12,
-		]);
-		Kirki::add_field('justg_config', [
-			'type'        => 'text',
-			'settings'    => 'judul_properti',
-			'label'       => __('Judul Properti', 'kirki'),
-			'section'     => 'section_properti',
-		]);
-		Kirki::add_field('justg_config', [
-			'type'        => 'text',
-			'settings'    => 'subjudul_properti',
-			'label'       => __('Sub Judul Properti', 'kirki'),
-			'section'     => 'section_properti',
-		]);
-
-
-		///Section Artikel
-		Kirki::add_section('section_artikel', [
-			'panel'    => 'panel_velocity',
-			'title'    => __('Artikel (Halaman Depan)', 'justg'),
-			'priority' => 12,
-		]);
-		Kirki::add_field('justg_config', [
-			'type'        => 'text',
-			'settings'    => 'judul_artikel',
-			'label'       => __('Judul Artikel', 'kirki'),
-			'section'     => 'section_artikel',
-		]);
-		Kirki::add_field('justg_config', [
-			'type'        => 'text',
-			'settings'    => 'subjudul_artikel',
-			'label'       => __('Sub Judul Artikel', 'kirki'),
-			'section'     => 'section_artikel',
-		]);		
-		$categories = Kirki_Helper::get_terms('category');
-		$categories[''] = 'Semua Kategori';
-		unset($categories[1]);
-		Kirki::add_field('justg_config', [
-			'type'        => 'select',
-			'settings'    => 'artikel_cat',
-			'label'       => __('Kategori Artikel', 'kirki'),
-			'section'     => 'section_artikel',
-			'choices'     => $categories,
-		]);
-
-
-
-		///Section Color
-		Kirki::add_section('section_colorvelocity', [
-			'panel'    => 'panel_velocity',
-			'title'    => __('Color & Background', 'justg'),
-			'priority' => 10,
-		]);
-		Kirki::add_field('justg_config', [
-			'type'        => 'color',
-			'settings'    => 'color_theme',
-			'label'       => __('Theme Color', 'kirki'),
-			'description' => esc_html__('', 'kirki'),
-			'section'     => 'section_colorvelocity',
-			'default'     => '#176cb7',
-			'transport'   => 'auto',
-			'output'      => [
-				[
-					'element'   => ':root',
-					'property'  => '--color-theme',
-				],
-				[
-					'element'   => ':root',
-					'property'  => '--bs-primary',
-				],
-				[
-					'element'   => '.border-color-theme',
-					'property'  => '--bs-border-color',
-				]
-			],
-		]);
-		Kirki::add_field('justg_config', [
-			'type'        => 'background',
-			'settings'    => 'background_themewebsite',
-			'label'       => __('Website Background', 'kirki'),
-			'description' => esc_html__('', 'kirki'),
-			'section'     => 'section_colorvelocity',
-			'default'     => [
-				'background-color'      => 'rgba(255,255,255)',
-				'background-image'      => '',
-				'background-repeat'     => 'repeat',
-				'background-position'   => 'center center',
-				'background-size'       => 'cover',
-				'background-attachment' => 'scroll',
-			],
-			'transport'   => 'auto',
-			'output'      => [
-				[
-					'element'   => ':root[data-bs-theme=light] body',
-				],
-				[
-					'element'   => 'body',
-				],
-			],
-		]);
-
-		// remove panel in customizer 
-		Kirki::remove_panel('global_panel');
-		Kirki::remove_panel('panel_header');
-		Kirki::remove_panel('panel_footer');
-		Kirki::remove_panel('panel_antispam');
-
-	endif;
+	add_action('customize_register', 'velocitychild_customize_register');
 
 	//remove action from Parent Theme
 	remove_action('justg_header', 'justg_header_menu');
@@ -200,6 +23,191 @@ function velocitychild_theme_setup()
 	remove_action('justg_do_footer', 'justg_the_footer_content');
 	remove_action('justg_do_footer', 'justg_the_footer_close');
 	remove_theme_support('widgets-block-editor');
+}
+
+function velocitychild_customize_register($wp_customize)
+{
+	$wp_customize->add_panel('panel_velocity', [
+		'priority'    => 10,
+		'title'       => esc_html__('Velocity Theme', 'justg'),
+		'description' => esc_html__('', 'justg'),
+	]);
+
+	$site_identity = $wp_customize->get_section('title_tagline');
+	if ($site_identity) {
+		$site_identity->panel = 'panel_velocity';
+		$site_identity->priority = 10;
+	}
+
+	$header_image = $wp_customize->get_section('header_image');
+	if ($header_image) {
+		$header_image->panel = 'panel_velocity';
+		$header_image->priority = 11;
+	}
+
+	$wp_customize->add_setting('home_header', [
+		'type'              => 'theme_mod',
+		'sanitize_callback' => 'esc_url_raw',
+	]);
+	$wp_customize->add_control(
+		new WP_Customize_Image_Control(
+			$wp_customize,
+			'home_header',
+			[
+				'label'    => __('Home Header', 'justg'),
+				'section'  => 'header_image',
+				'priority' => 1,
+			]
+		)
+	);
+
+	$wp_customize->add_section('section_layanan', [
+		'panel'    => 'panel_velocity',
+		'title'    => __('Layanan (Halaman Depan)', 'justg'),
+		'priority' => 12,
+	]);
+	$wp_customize->add_setting('judul_layanan', [
+		'type'              => 'theme_mod',
+		'sanitize_callback' => 'sanitize_text_field',
+	]);
+	$wp_customize->add_control('judul_layanan', [
+		'type'    => 'text',
+		'label'   => __('Judul Layanan', 'justg'),
+		'section' => 'section_layanan',
+	]);
+	$wp_customize->add_setting('subjudul_layanan', [
+		'type'              => 'theme_mod',
+		'sanitize_callback' => 'sanitize_text_field',
+	]);
+	$wp_customize->add_control('subjudul_layanan', [
+		'type'    => 'text',
+		'label'   => __('Sub Judul Layanan', 'justg'),
+		'section' => 'section_layanan',
+	]);
+	for ($x = 1; $x <= 4; $x++) {
+		$wp_customize->add_setting('layanan' . $x, [
+			'type'              => 'theme_mod',
+			'sanitize_callback' => 'sanitize_text_field',
+		]);
+		$wp_customize->add_control('layanan' . $x, [
+			'type'        => 'text',
+			'label'       => __('Layanan ' . $x, 'justg'),
+			'description' => esc_html__('Judul layanan ' . $x, 'justg'),
+			'section'     => 'section_layanan',
+		]);
+
+		$wp_customize->add_setting('urllayanan' . $x, [
+			'type'              => 'theme_mod',
+			'sanitize_callback' => 'esc_url_raw',
+		]);
+		$wp_customize->add_control('urllayanan' . $x, [
+			'type'    => 'url',
+			'label'   => __('Link Layanan ' . $x, 'justg'),
+			'section' => 'section_layanan',
+		]);
+
+		$wp_customize->add_setting('gambarlayanan' . $x, [
+			'type'              => 'theme_mod',
+			'sanitize_callback' => 'esc_url_raw',
+		]);
+		$wp_customize->add_control(
+			new WP_Customize_Image_Control(
+				$wp_customize,
+				'gambarlayanan' . $x,
+				[
+					'label'   => __('Gambar Layanan ' . $x, 'justg'),
+					'section' => 'section_layanan',
+				]
+			)
+		);
+	}
+
+	$wp_customize->add_section('section_properti', [
+		'panel'    => 'panel_velocity',
+		'title'    => __('Properti (Halaman Depan)', 'justg'),
+		'priority' => 13,
+	]);
+	$wp_customize->add_setting('judul_properti', [
+		'type'              => 'theme_mod',
+		'sanitize_callback' => 'sanitize_text_field',
+	]);
+	$wp_customize->add_control('judul_properti', [
+		'type'    => 'text',
+		'label'   => __('Judul Properti', 'justg'),
+		'section' => 'section_properti',
+	]);
+	$wp_customize->add_setting('subjudul_properti', [
+		'type'              => 'theme_mod',
+		'sanitize_callback' => 'sanitize_text_field',
+	]);
+	$wp_customize->add_control('subjudul_properti', [
+		'type'    => 'text',
+		'label'   => __('Sub Judul Properti', 'justg'),
+		'section' => 'section_properti',
+	]);
+
+	$wp_customize->add_section('section_artikel', [
+		'panel'    => 'panel_velocity',
+		'title'    => __('Artikel (Halaman Depan)', 'justg'),
+		'priority' => 14,
+	]);
+	$wp_customize->add_setting('judul_artikel', [
+		'type'              => 'theme_mod',
+		'sanitize_callback' => 'sanitize_text_field',
+	]);
+	$wp_customize->add_control('judul_artikel', [
+		'type'    => 'text',
+		'label'   => __('Judul Artikel', 'justg'),
+		'section' => 'section_artikel',
+	]);
+	$wp_customize->add_setting('subjudul_artikel', [
+		'type'              => 'theme_mod',
+		'sanitize_callback' => 'sanitize_text_field',
+	]);
+	$wp_customize->add_control('subjudul_artikel', [
+		'type'    => 'text',
+		'label'   => __('Sub Judul Artikel', 'justg'),
+		'section' => 'section_artikel',
+	]);
+
+	$categories = get_terms([
+		'taxonomy'   => 'category',
+		'hide_empty' => false,
+	]);
+	$category_choices = [
+		'' => 'Semua Kategori',
+	];
+	if (!is_wp_error($categories)) {
+		foreach ($categories as $category) {
+			$category_choices[$category->term_id] = $category->name;
+		}
+	}
+	unset($category_choices[1]);
+	$wp_customize->add_setting('artikel_cat', [
+		'type'              => 'theme_mod',
+		'sanitize_callback' => 'velocitychild_sanitize_article_cat',
+	]);
+	$wp_customize->add_control('artikel_cat', [
+		'type'    => 'select',
+		'label'   => __('Kategori Artikel', 'justg'),
+		'section' => 'section_artikel',
+		'choices' => $category_choices,
+	]);
+
+	// remove panel in customizer
+	$wp_customize->remove_panel('global_panel');
+	$wp_customize->remove_panel('panel_header');
+	$wp_customize->remove_panel('panel_footer');
+	$wp_customize->remove_panel('panel_antispam');
+}
+
+function velocitychild_sanitize_article_cat($value)
+{
+	if ($value === '' || $value === null) {
+		return '';
+	}
+
+	return absint($value);
 }
 
 
