@@ -24,22 +24,80 @@ get_header();
         } if($subjudul_layanan){
             echo '<p class="w-100 text-muted mb-4">'.$subjudul_layanan.'</p>';
         }
-        echo '<div class="row">';
-        for ($x = 1; $x <= 4; $x++) {
-            echo '<div class="col-sm-6 col-md-3">';
-                echo '<div class="card-layanan">';
-                    echo '<div class="img-layanan">';
-                        echo '<img src="'.velocitytheme_option('gambarlayanan'.$x, '').'">';
+        $services = get_theme_mod('services_list', []);
+        if (is_string($services)) {
+            $decoded_services = json_decode($services, true);
+            $services = (json_last_error() === JSON_ERROR_NONE) ? $decoded_services : [];
+        }
+        if (!is_array($services)) {
+            $services = [];
+        }
+        if (empty($services)) {
+            $legacy_services = [];
+            for ($x = 1; $x <= 4; $x++) {
+                $legacy_title = velocitytheme_option('layanan'.$x, '');
+                $legacy_link = velocitytheme_option('urllayanan'.$x, '');
+                $legacy_image = velocitytheme_option('gambarlayanan'.$x, '');
+                if ($legacy_title || $legacy_link || $legacy_image) {
+                    $legacy_services[] = [
+                        'service_title' => $legacy_title,
+                        'service_link' => $legacy_link,
+                        'service_image' => $legacy_image,
+                    ];
+                }
+            }
+            $services = $legacy_services;
+        }
+
+        if (!empty($services)) {
+            $service_count = count($services);
+            if ($service_count <= 1) {
+                $cols_xxl = 1;
+            } elseif ($service_count === 2) {
+                $cols_xxl = 2;
+            } elseif ($service_count === 3) {
+                $cols_xxl = 3;
+            } elseif ($service_count === 4) {
+                $cols_xxl = 4;
+            } elseif ($service_count === 5) {
+                $cols_xxl = 5;
+            } elseif ($service_count === 6) {
+                $cols_xxl = 3;
+            } elseif ($service_count === 7) {
+                $cols_xxl = 4;
+            } elseif ($service_count === 8) {
+                $cols_xxl = 4;
+            } else {
+                $cols_xxl = 5;
+            }
+
+            echo '<div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 row-cols-xxl-'.$cols_xxl.' g-3 justify-content-center">';
+            foreach ($services as $service) {
+                $service_title = isset($service['service_title']) ? $service['service_title'] : '';
+                $service_link = isset($service['service_link']) ? $service['service_link'] : '';
+                $service_image = isset($service['service_image']) ? $service['service_image'] : '';
+
+                echo '<div class="col">';
+                    echo '<div class="card-layanan">';
+                        echo '<div class="img-layanan">';
+                            if (!empty($service_image)) {
+                                echo '<img src="'.esc_url($service_image).'">';
+                            }
+                        echo '</div>';
+                        echo '<h6 class="fs-6">';
+                            if (!empty($service_link)) {
+                                echo '<a href="'.esc_url($service_link).'">';
+                            }
+                            echo '<strong class="text-dark">'.esc_html($service_title).'</strong>';
+                            if (!empty($service_link)) {
+                                echo '</a>';
+                            }
+                        echo '</h6>';
                     echo '</div>';
-                    echo '<h6 class="fs-6">';
-                        echo '<a href="'.velocitytheme_option('urllayanan'.$x, '').'">';
-                            echo '<strong class="text-dark">'.velocitytheme_option('layanan'.$x, '').'</strong>';
-                        echo '</a>';
-                    echo '</h6>';
                 echo '</div>';
+            }
             echo '</div>';
         }
-        echo '</div>';
     echo '</div>';
     ?>
 

@@ -25,6 +25,157 @@ function velocitychild_theme_setup()
 	remove_theme_support('widgets-block-editor');
 }
 
+if (!function_exists('velocitychild_get_services_repeater_fields')) {
+	function velocitychild_get_services_repeater_fields()
+	{
+		return [
+			'service_title' => [
+				'type'    => 'text',
+				'label'   => __('Judul Layanan', 'justg'),
+				'default' => '',
+			],
+			'service_link' => [
+				'type'        => 'url',
+				'label'       => __('Link Layanan', 'justg'),
+				'default'     => '',
+				'description' => __('URL menuju halaman layanan.', 'justg'),
+			],
+			'service_image' => [
+				'type'        => 'image',
+				'label'       => __('Gambar Layanan', 'justg'),
+				'default'     => '',
+				'description' => __('Pilih gambar dari Media Library.', 'justg'),
+			],
+		];
+	}
+}
+
+if (!class_exists('WP_Customize_Control') && file_exists(ABSPATH . WPINC . '/class-wp-customize-control.php')) {
+	require_once ABSPATH . WPINC . '/class-wp-customize-control.php';
+}
+
+if (!class_exists('Velocitychild_Repeater_Control') && class_exists('WP_Customize_Control')) {
+	class Velocitychild_Repeater_Control extends WP_Customize_Control {
+		public $type = 'velocity_repeater';
+		public $fields = [];
+
+		public function __construct($manager, $id, $args = [], $options = [])
+		{
+			if (isset($args['fields'])) {
+				$this->fields = (array) $args['fields'];
+				unset($args['fields']);
+			}
+			parent::__construct($manager, $id, $args);
+		}
+
+		protected function render_content()
+		{
+			if (empty($this->fields)) {
+				return;
+			}
+
+			$value = $this->value();
+			if (is_string($value)) {
+				$decoded = json_decode($value, true);
+				$value = (json_last_error() === JSON_ERROR_NONE) ? $decoded : [];
+			}
+
+			if (!is_array($value)) {
+				$value = [];
+			}
+
+			$encoded_value = wp_json_encode($value);
+			if (empty($encoded_value)) {
+				$encoded_value = '[]';
+			}
+			?>
+			<div class="velocity-repeater-control">
+				<?php if (!empty($this->label)) : ?>
+					<span class="customize-control-title"><?php echo esc_html($this->label); ?></span>
+				<?php endif; ?>
+				<?php if (!empty($this->description)) : ?>
+					<p class="description"><?php echo wp_kses_post($this->description); ?></p>
+				<?php endif; ?>
+
+				<div class="velocity-repeater" data-fields="<?php echo esc_attr(wp_json_encode($this->fields)); ?>" data-default-label="<?php echo esc_attr(__('Layanan', 'justg')); ?>">
+					<input type="hidden" class="velocity-repeater-store" <?php $this->link(); ?> value="<?php echo esc_attr($encoded_value); ?>">
+					<div class="velocity-repeater-items">
+						<?php
+						if (!empty($value)) {
+							foreach ($value as $item) {
+								echo $this->get_single_item_markup($item); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+							}
+						}
+						?>
+					</div>
+					<button type="button" class="button button-primary velocity-repeater-add"><?php esc_html_e('Tambah Layanan', 'justg'); ?></button>
+					<script type="text/html" class="velocity-repeater-template">
+						<?php echo $this->get_single_item_markup([]); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
+					</script>
+				</div>
+			</div>
+			<?php
+		}
+
+		private function get_single_item_markup($item_values = [])
+		{
+			ob_start();
+			$title   = isset($item_values['service_title']) ? $item_values['service_title'] : '';
+			$summary = $title ? $title : __('Layanan', 'justg');
+			?>
+			<div class="velocity-repeater-item">
+				<button type="button" class="velocity-repeater-toggle" aria-expanded="true">
+					<span class="velocity-repeater-item-label"><?php echo esc_html($summary); ?></span>
+					<span class="velocity-repeater-toggle-icon" aria-hidden="true"></span>
+				</button>
+				<div class="velocity-repeater-item-body">
+					<?php foreach ($this->fields as $field_key => $field) :
+						$field_type    = isset($field['type']) ? $field['type'] : 'text';
+						$field_label   = isset($field['label']) ? $field['label'] : '';
+						$field_value   = isset($item_values[$field_key]) ? $item_values[$field_key] : '';
+						$field_default = isset($field['default']) ? $field['default'] : '';
+						$field_desc    = isset($field['description']) ? $field['description'] : '';
+						$is_summary    = ('service_title' === $field_key);
+						?>
+						<label class="velocity-repeater-field">
+							<span class="velocity-repeater-field-label"><?php echo esc_html($field_label); ?></span>
+							<?php if ('textarea' === $field_type) : ?>
+								<textarea data-field="<?php echo esc_attr($field_key); ?>" data-default="<?php echo esc_attr($field_default); ?>" <?php echo $is_summary ? 'data-summary-field="true"' : ''; ?>><?php echo esc_textarea($field_value); ?></textarea>
+							<?php elseif ('image' === $field_type) : ?>
+								<div class="velocity-repeater-media">
+									<input type="hidden" data-field="<?php echo esc_attr($field_key); ?>" data-default="<?php echo esc_attr($field_default); ?>" value="<?php echo esc_attr($field_value); ?>">
+									<div class="velocity-repeater-media-preview">
+										<?php if (!empty($field_value)) : ?>
+											<img src="<?php echo esc_url($field_value); ?>" alt="">
+										<?php else : ?>
+											<span><?php esc_html_e('Belum ada gambar', 'justg'); ?></span>
+										<?php endif; ?>
+									</div>
+									<div class="velocity-repeater-media-actions">
+										<button type="button" class="button velocity-repeater-upload"><?php esc_html_e('Pilih Gambar', 'justg'); ?></button>
+										<button type="button" class="button velocity-repeater-remove-image"><?php esc_html_e('Hapus', 'justg'); ?></button>
+									</div>
+								</div>
+							<?php else : ?>
+								<input type="<?php echo esc_attr($field_type); ?>" data-field="<?php echo esc_attr($field_key); ?>" data-default="<?php echo esc_attr($field_default); ?>" value="<?php echo esc_attr($field_value); ?>" <?php echo $is_summary ? 'data-summary-field="true"' : ''; ?>>
+							<?php endif; ?>
+							<?php if (!empty($field_desc)) : ?>
+								<span class="description customize-control-description"><?php echo esc_html($field_desc); ?></span>
+							<?php endif; ?>
+						</label>
+					<?php endforeach; ?>
+					<div class="velocity-repeater-actions">
+						<button type="button" class="button velocity-repeater-clone"><?php esc_html_e('Clone', 'justg'); ?></button>
+						<button type="button" class="button button-secondary velocity-repeater-remove"><?php esc_html_e('Hapus', 'justg'); ?></button>
+					</div>
+				</div>
+			</div>
+			<?php
+			return ob_get_clean();
+		}
+	}
+}
+
 function velocitychild_customize_register($wp_customize)
 {
 	$wp_customize->add_panel('panel_velocity', [
@@ -84,43 +235,18 @@ function velocitychild_customize_register($wp_customize)
 		'label'   => __('Sub Judul Layanan', 'justg'),
 		'section' => 'section_layanan',
 	]);
-	for ($x = 1; $x <= 4; $x++) {
-		$wp_customize->add_setting('layanan' . $x, [
-			'type'              => 'theme_mod',
-			'sanitize_callback' => 'sanitize_text_field',
-		]);
-		$wp_customize->add_control('layanan' . $x, [
-			'type'        => 'text',
-			'label'       => __('Layanan ' . $x, 'justg'),
-			'description' => esc_html__('Judul layanan ' . $x, 'justg'),
-			'section'     => 'section_layanan',
-		]);
-
-		$wp_customize->add_setting('urllayanan' . $x, [
-			'type'              => 'theme_mod',
-			'sanitize_callback' => 'esc_url_raw',
-		]);
-		$wp_customize->add_control('urllayanan' . $x, [
-			'type'    => 'url',
-			'label'   => __('Link Layanan ' . $x, 'justg'),
-			'section' => 'section_layanan',
-		]);
-
-		$wp_customize->add_setting('gambarlayanan' . $x, [
-			'type'              => 'theme_mod',
-			'sanitize_callback' => 'esc_url_raw',
-		]);
-		$wp_customize->add_control(
-			new WP_Customize_Image_Control(
-				$wp_customize,
-				'gambarlayanan' . $x,
-				[
-					'label'   => __('Gambar Layanan ' . $x, 'justg'),
-					'section' => 'section_layanan',
-				]
-			)
-		);
-	}
+	$wp_customize->add_setting('services_list', [
+		'type'              => 'theme_mod',
+		'default'           => [],
+		'sanitize_callback' => 'velocitychild_sanitize_services_list',
+	]);
+	$wp_customize->add_control(new Velocitychild_Repeater_Control($wp_customize, 'services_list', [
+		'label'       => __('Daftar Layanan', 'justg'),
+		'description' => __('Tambah, edit, clone, atau hapus layanan.', 'justg'),
+		'section'     => 'section_layanan',
+		'priority'    => 20,
+		'fields'      => velocitychild_get_services_repeater_fields(),
+	]));
 
 	$wp_customize->add_section('section_properti', [
 		'panel'    => 'panel_velocity',
@@ -233,6 +359,86 @@ function velocitychild_sanitize_article_cat($value)
 
 	return absint($value);
 }
+
+function velocitychild_sanitize_services_list($value)
+{
+	if (is_string($value)) {
+		$decoded = json_decode($value, true);
+		if (json_last_error() === JSON_ERROR_NONE) {
+			$value = $decoded;
+		}
+	}
+
+	if (!is_array($value)) {
+		return [];
+	}
+
+	$fields = velocitychild_get_services_repeater_fields();
+	$clean  = [];
+
+	foreach ($value as $item) {
+		if (!is_array($item)) {
+			continue;
+		}
+
+		$clean_item = [];
+		$is_empty   = true;
+
+		foreach ($fields as $field_key => $field) {
+			$field_value = isset($item[$field_key]) ? $item[$field_key] : '';
+
+			switch ($field_key) {
+				case 'service_link':
+				case 'service_image':
+					$field_value = esc_url_raw($field_value);
+					break;
+				default:
+					$field_value = sanitize_text_field($field_value);
+					break;
+			}
+
+			if ('' === $field_value && !empty($field['default'])) {
+				$field_value = $field['default'];
+			}
+
+			if (!empty($field_value)) {
+				$is_empty = false;
+			}
+
+			$clean_item[$field_key] = $field_value;
+		}
+
+		if (!$is_empty) {
+			$clean[] = $clean_item;
+		}
+	}
+
+	return $clean;
+}
+
+function velocitychild_customize_controls_assets()
+{
+	$theme   = wp_get_theme();
+	$version = $theme ? $theme->get('Version') : '1.0.0';
+
+	wp_enqueue_media();
+
+	wp_enqueue_style(
+		'velocitychild-customizer-repeater',
+		get_stylesheet_directory_uri() . '/css/customizer-repeater.css',
+		[],
+		$version
+	);
+
+	wp_enqueue_script(
+		'velocitychild-customizer-repeater',
+		get_stylesheet_directory_uri() . '/js/customizer-repeater.js',
+		['customize-controls', 'jquery'],
+		$version,
+		true
+	);
+}
+add_action('customize_controls_enqueue_scripts', 'velocitychild_customize_controls_assets');
 
 
 ///remove breadcrumbs
