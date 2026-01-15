@@ -3,7 +3,7 @@ $content = get_the_content();
 $trimmed_content = wp_trim_words($content,10);
 ?>
 
-<div class="card h-100 w-100 text-start rounded-0">
+<div class="card h-100 w-100 text-start">
     <?php 
     $kondisi_property = get_post_meta(get_the_ID(), 'kondisi_property', true );
     if($kondisi_property){ ?>
@@ -18,7 +18,7 @@ $trimmed_content = wp_trim_words($content,10);
     ?>
     <a href="<?php the_permalink(); ?>" title="<?php the_title_attribute(); ?>">
         <div class="ratio ratio-4x3">
-            <img class="card-img-top m-0 rounded-0 img-fluid" 
+            <img class="card-img-top m-0 rounded-top img-fluid" 
                  src="<?php echo esc_url($thumbnail_url); ?>" 
                  alt="<?php the_title_attribute(); ?>">
         </div>

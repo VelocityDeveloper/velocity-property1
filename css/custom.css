@@ -38,17 +38,23 @@
     background-color: #fff;
     border: 1px solid #eee;
     box-shadow: 0px 0px 7px 0px rgba(0,0,0,0.1);
-    padding: 0 0 10px;
-    margin: 65px 0 0;
+    padding: 24px 16px 18px;
+    margin: 0;
+    text-align: center;
+    border-radius: 10px;
  }
- .img-layanan {
-    margin: -45px 0 20px 0;
- }
- .img-layanan img {
-	max-width: 135px;
-	max-height: 135px;
-	border: 5px solid #fff;
-	box-shadow: 0px 0px 7px 0px rgba(0,0,0,0.2);
+.img-layanan {
+    margin: 0 auto 16px auto;
+    width: 140px;
+}
+.card-layanan-body {
+    flex: none;
+}
+.img-layanan img {
+	box-shadow: 0px 6px 14px rgba(0,0,0,0.12);
+}
+.lh-custom {
+    line-height: 1.5;
 }
  .label-property {
     background: var(--bs-primary);

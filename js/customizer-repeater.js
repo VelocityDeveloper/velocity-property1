@@ -110,6 +110,10 @@
 			$field.val(value);
 		});
 
+		if (values.service_image) {
+			$item.find('.velocity-repeater-media-preview').html('<img src="' + values.service_image + '" alt="">');
+		}
+
 		return $item;
 	};
 

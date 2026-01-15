@@ -29,9 +29,20 @@ if (!function_exists('velocitychild_get_services_repeater_fields')) {
 	function velocitychild_get_services_repeater_fields()
 	{
 		return [
+			'service_image' => [
+				'type'        => 'image',
+				'label'       => __('Gambar Layanan', 'justg'),
+				'default'     => '',
+				'description' => __('Pilih gambar dari Media Library.', 'justg'),
+			],
 			'service_title' => [
 				'type'    => 'text',
 				'label'   => __('Judul Layanan', 'justg'),
+				'default' => '',
+			],
+			'service_desc' => [
+				'type'    => 'textarea',
+				'label'   => __('Deskripsi Layanan', 'justg'),
 				'default' => '',
 			],
 			'service_link' => [
@@ -39,12 +50,6 @@ if (!function_exists('velocitychild_get_services_repeater_fields')) {
 				'label'       => __('Link Layanan', 'justg'),
 				'default'     => '',
 				'description' => __('URL menuju halaman layanan.', 'justg'),
-			],
-			'service_image' => [
-				'type'        => 'image',
-				'label'       => __('Gambar Layanan', 'justg'),
-				'default'     => '',
-				'description' => __('Pilih gambar dari Media Library.', 'justg'),
 			],
 		];
 	}
@@ -388,6 +393,9 @@ function velocitychild_sanitize_services_list($value)
 			$field_value = isset($item[$field_key]) ? $item[$field_key] : '';
 
 			switch ($field_key) {
+				case 'service_desc':
+					$field_value = sanitize_textarea_field($field_value);
+					break;
 				case 'service_link':
 				case 'service_image':
 					$field_value = esc_url_raw($field_value);

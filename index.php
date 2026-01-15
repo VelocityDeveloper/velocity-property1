@@ -18,9 +18,9 @@ get_header();
     <?php 
     $judul_layanan = velocitytheme_option('judul_layanan', '');
     $subjudul_layanan = velocitytheme_option('subjudul_layanan', '');
-    echo '<div class="text-center my-3">';
+    echo '<div class="text-center my-3 services-section">';
         if($judul_layanan){
-            echo '<h3 class="w-100 text-center mt-5 mb-2 fs-3">'.$judul_layanan.'</h3>';
+            echo '<h2 class="w-100 text-center mt-5 mb-2 fs-3">'.$judul_layanan.'</h2>';
         } if($subjudul_layanan){
             echo '<p class="w-100 text-muted mb-4">'.$subjudul_layanan.'</p>';
         }
@@ -52,50 +52,76 @@ get_header();
         if (!empty($services)) {
             $service_count = count($services);
             if ($service_count <= 1) {
+                $cols_md = 1;
+                $cols_lg = 1;
                 $cols_xxl = 1;
             } elseif ($service_count === 2) {
+                $cols_md = 2;
+                $cols_lg = 2;
                 $cols_xxl = 2;
             } elseif ($service_count === 3) {
+                $cols_md = 3;
+                $cols_lg = 3;
                 $cols_xxl = 3;
             } elseif ($service_count === 4) {
+                $cols_md = 4;
+                $cols_lg = 4;
                 $cols_xxl = 4;
             } elseif ($service_count === 5) {
+                $cols_md = 4;
+                $cols_lg = 4;
                 $cols_xxl = 5;
             } elseif ($service_count === 6) {
+                $cols_md = 3;
+                $cols_lg = 3;
                 $cols_xxl = 3;
             } elseif ($service_count === 7) {
+                $cols_md = 3;
+                $cols_lg = 4;
                 $cols_xxl = 4;
             } elseif ($service_count === 8) {
+                $cols_md = 4;
+                $cols_lg = 4;
                 $cols_xxl = 4;
+            } elseif ($service_count === 9) {
+                $cols_md = 3;
+                $cols_lg = 3;
+                $cols_xxl = 5;
             } else {
+                $cols_md = 4;
+                $cols_lg = 4;
                 $cols_xxl = 5;
             }
 
-            echo '<div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 row-cols-xxl-'.$cols_xxl.' g-3 justify-content-center">';
+            echo '<div class="row row-cols-1 row-cols-sm-2 row-cols-md-'.$cols_md.' row-cols-lg-'.$cols_lg.' row-cols-xxl-'.$cols_xxl.' g-3 justify-content-center">';
             foreach ($services as $service) {
                 $service_title = isset($service['service_title']) ? $service['service_title'] : '';
+                $service_desc = isset($service['service_desc']) ? $service['service_desc'] : '';
                 $service_link = isset($service['service_link']) ? $service['service_link'] : '';
                 $service_image = isset($service['service_image']) ? $service['service_image'] : '';
 
-                echo '<div class="col">';
-                    echo '<div class="card-layanan">';
-                        echo '<div class="img-layanan">';
-                            if (!empty($service_image)) {
-                                echo '<img src="'.esc_url($service_image).'">';
-                            }
-                        echo '</div>';
-                        echo '<h6 class="fs-6">';
-                            if (!empty($service_link)) {
-                                echo '<a href="'.esc_url($service_link).'">';
-                            }
-                            echo '<strong class="text-dark">'.esc_html($service_title).'</strong>';
-                            if (!empty($service_link)) {
-                                echo '</a>';
-                            }
-                        echo '</h6>';
+            echo '<div class="col">';
+                echo '<div class="card-layanan h-100">';
+                    echo '<div class="img-layanan ratio ratio-1x1 mx-auto">';
+                        if (!empty($service_image)) {
+                            echo '<img class="img-fluid rounded-circle object-fit-cover" src="'.esc_url($service_image).'" alt="">';
+                        }
                     echo '</div>';
+                    echo '<h3 class="fs-6">';
+                        if (!empty($service_link)) {
+                            echo '<a href="'.esc_url($service_link).'">';
+                        }
+                        echo '<strong class="text-dark">'.esc_html($service_title).'</strong>';
+                        if (!empty($service_link)) {
+                            echo '</a>';
+                        }
+                    echo '</h3>';
+                    if (!empty($service_desc)) {
+                        echo '<p class="text-muted lh-custom mb-0">'.esc_html($service_desc).'</p>';
+                    }
                 echo '</div>';
-            }
+            echo '</div>';
+        }
             echo '</div>';
         }
     echo '</div>';
@@ -142,13 +168,17 @@ get_header();
     <div class="text-center row mb-5">
     <?php while($wp_query->have_posts()): $wp_query->the_post();
     $content = get_the_content();
-    $trimmed_content = wp_trim_words($content,20); ?>
+    $trimmed_content = wp_trim_words($content,20);
+    $thumbnail_url = get_the_post_thumbnail_url(get_the_ID(), 'large');
+    if (!$thumbnail_url) {
+        $thumbnail_url = get_stylesheet_directory_uri() . '/img/no-image.webp';
+    } ?>
     <div class="col-sm-4">
         <div class="card w-100 text-start rounded-0 border-0 bg-transparent">
         <a href="<?php the_permalink(); ?>" title="<?php the_title_attribute(); ?>">
             <div class="ratio ratio-4x3">
             <img class="home-bottom-post-thumb rounded-0 img-fluid" 
-                src="<?php the_post_thumbnail_url('large'); ?>" 
+                src="<?php echo esc_url($thumbnail_url); ?>" 
                 alt="<?php the_title_attribute(); ?>">
             </div>
         </a>
