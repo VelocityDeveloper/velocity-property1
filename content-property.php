@@ -134,7 +134,7 @@ $daya_listrik = get_post_meta( $post->ID, 'daya_listrik', true );
                     </div>
                     <div class="col-12">
                         <hr>
-                        <?php echo get_the_content();?>
+                        <?php the_content();?>
                     </div>
                 </div>
             </div>
